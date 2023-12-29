@@ -13,6 +13,15 @@ export default function Formulario() {
 
     const handleSubmit = (e) => {
         e.preventDefault()
+
+        // Validar formulario
+        if ([nombre, propietario, email, fecha, sintomas].includes('')) {
+            console.log('Hay campos vacios')
+        } else {
+            console.log('Todo correcto')
+        }
+
+
         console.log('enviando formulario')
     }
 

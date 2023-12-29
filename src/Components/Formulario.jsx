@@ -1,5 +1,6 @@
 
 import { useState, useEffect } from "react"
+import ErrorMessage from "./ErrorMessage"
 
 export default function Formulario() {
 
@@ -8,6 +9,7 @@ export default function Formulario() {
     const [email, setEmail] = useState('')
     const [fecha, setFecha] = useState('')
     const [sintomas, setSintomas] = useState('')
+    const [error, setError] = useState(false)
 
 
 
@@ -16,10 +18,10 @@ export default function Formulario() {
 
         // Validar formulario
         if ([nombre, propietario, email, fecha, sintomas].includes('')) {
-            console.log('Hay campos vacios')
-        } else {
-            console.log('Todo correcto')
+            setError(true)
         }
+
+        setError(false)
 
 
         console.log('enviando formulario')
@@ -39,6 +41,7 @@ export default function Formulario() {
                 className="bg-white shadow rounded-lg py-10 px-5 mb-10 mx-5"
                 onSubmit={handleSubmit}
             >
+                {error && <ErrorMessage />}
                 <div className="mb-5">
                     <label htmlFor="mascota" className="block text-gray-700 uppercase font-bold">
                         Nombre Mascota

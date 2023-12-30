@@ -58,9 +58,7 @@ export default function Formulario({ pacientes, setPacientes }) {
                 className="bg-white shadow rounded-lg py-10 px-5 mb-10 mx-5"
                 onSubmit={handleSubmit}
             >
-                {error && <ErrorMessage
-                    mensaje="Todos los campos son obligatorios"
-                />}
+                {error && <ErrorMessage><p>Todos los campos son obligatorios</p></ErrorMessage>}
                 <div className="mb-5">
                     <label htmlFor="mascota" className="block text-gray-700 uppercase font-bold">
                         Nombre Mascota

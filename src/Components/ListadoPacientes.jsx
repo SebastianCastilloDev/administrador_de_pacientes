@@ -1,7 +1,8 @@
 import React from 'react'
 import Paciente from './Paciente'
 
-export default function ListadoPacientes() {
+export default function ListadoPacientes({ pacientes }) {
+    console.log(pacientes)
     return (
         <div className='md:w-1/2 lg:w-3/5 md:h-screen overflow-y-scroll'>
             <h2 className='font-black text-3xl text-center'>
@@ -12,10 +13,19 @@ export default function ListadoPacientes() {
                 <span className='text-indigo-600 font-bold'>Pacientes y citas</span>
             </p>
 
-            <Paciente />
-            <Paciente />
-            <Paciente />
-            <Paciente />
+            {
+                pacientes.map(paciente => {
+                    return (
+                        <Paciente
+                            key={paciente + Math.random()}
+                            paciente={paciente}
+                        />
+                    )
+                })
+            }
+
+
+
 
         </div>
     )

@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react"
 import ErrorMessage from "./ErrorMessage"
 
-export default function Formulario() {
+export default function Formulario({ pacientes, setPacientes }) {
 
     const [nombre, setNombre] = useState('')
     const [propietario, setPropietario] = useState('')
@@ -11,20 +11,37 @@ export default function Formulario() {
     const [sintomas, setSintomas] = useState('')
     const [error, setError] = useState(false)
 
-
-
     const handleSubmit = (e) => {
         e.preventDefault()
-
+        console.log(nombre, propietario, email, fecha, sintomas)
+        console.log([nombre, propietario, email, fecha, sintomas].includes(''))
         // Validar formulario
         if ([nombre, propietario, email, fecha, sintomas].includes('')) {
             setError(true)
+            return
         }
 
         setError(false)
 
+        // Objeto paciente
 
-        console.log('enviando formulario')
+        const objetoPaciente = {
+            nombre,
+            propietario,
+            email,
+            fecha,
+            sintomas
+        }
+        setPacientes([...pacientes, objetoPaciente])
+
+        // Resetear formulario
+        setNombre('')
+        setPropietario('')
+        setEmail('')
+        setFecha('')
+        setSintomas('')
+
+
     }
 
     return (
@@ -41,7 +58,9 @@ export default function Formulario() {
                 className="bg-white shadow rounded-lg py-10 px-5 mb-10 mx-5"
                 onSubmit={handleSubmit}
             >
-                {error && <ErrorMessage />}
+                {error && <ErrorMessage
+                    mensaje="Todos los campos son obligatorios"
+                />}
                 <div className="mb-5">
                     <label htmlFor="mascota" className="block text-gray-700 uppercase font-bold">
                         Nombre Mascota
@@ -83,7 +102,7 @@ export default function Formulario() {
                 </div>
                 <div className="mb-5">
                     <label htmlFor="alta" className="block text-gray-700 uppercase font-bold">
-                        Email Propietario
+                        Fecha de ingreso
                     </label>
                     <input
                         type="date"

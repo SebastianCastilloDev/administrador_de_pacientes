@@ -1,6 +1,7 @@
 
 import { useState, useEffect } from "react"
 import ErrorMessage from "./ErrorMessage"
+import { v4 as uuidv4 } from 'uuid';
 
 export default function Formulario({ pacientes, setPacientes }) {
 
@@ -24,13 +25,15 @@ export default function Formulario({ pacientes, setPacientes }) {
         setError(false)
 
         // Objeto paciente
+        const key = uuidv4()
 
         const objetoPaciente = {
             nombre,
             propietario,
             email,
             fecha,
-            sintomas
+            sintomas,
+            key
         }
         setPacientes([...pacientes, objetoPaciente])
 

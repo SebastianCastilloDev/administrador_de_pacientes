@@ -3,7 +3,7 @@ import { useState, useEffect } from "react"
 import ErrorMessage from "./ErrorMessage"
 import { v4 as uuidv4 } from 'uuid';
 
-export default function Formulario({ pacientes, setPacientes }) {
+export default function Formulario({ pacientes, setPacientes, paciente, setPaciente }) {
 
     const [nombre, setNombre] = useState('')
     const [propietario, setPropietario] = useState('')
@@ -12,9 +12,19 @@ export default function Formulario({ pacientes, setPacientes }) {
     const [sintomas, setSintomas] = useState('')
     const [error, setError] = useState(false)
 
+    useEffect(() => {
+        if (Object.keys(paciente).length) {
+            setNombre(paciente.nombre)
+            setPropietario(paciente.propietario)
+            setEmail(paciente.email)
+            setFecha(paciente.fecha)
+            setSintomas(paciente.sintomas)
+
+        }
+    }, [paciente])
+
     const handleSubmit = (e) => {
         e.preventDefault()
-        console.log(nombre, propietario, email, fecha, sintomas)
         console.log([nombre, propietario, email, fecha, sintomas].includes(''))
         // Validar formulario
         if ([nombre, propietario, email, fecha, sintomas].includes('')) {
@@ -25,7 +35,6 @@ export default function Formulario({ pacientes, setPacientes }) {
         setError(false)
 
         // Objeto paciente
-        const key = uuidv4()
 
         const objetoPaciente = {
             nombre,
@@ -33,9 +42,25 @@ export default function Formulario({ pacientes, setPacientes }) {
             email,
             fecha,
             sintomas,
-            key
+
         }
-        setPacientes([...pacientes, objetoPaciente])
+
+        if (paciente.id) {
+            //Editando el registro
+            objetoPaciente.id = paciente.id
+            const pacientesActualizados = pacientes.map(
+                pacienteState =>
+                    pacienteState.id === paciente.id ?
+                        objetoPaciente : pacienteState
+            )
+            setPacientes(pacientesActualizados)
+            setPaciente({})
+
+        } else {
+            // Nuevo registro
+            objetoPaciente.id = uuidv4()
+            setPacientes([...pacientes, objetoPaciente])
+        }
 
         // Resetear formulario
         setNombre('')
@@ -43,8 +68,6 @@ export default function Formulario({ pacientes, setPacientes }) {
         setEmail('')
         setFecha('')
         setSintomas('')
-
-
     }
 
     return (
@@ -54,7 +77,7 @@ export default function Formulario({ pacientes, setPacientes }) {
             </h2>
             <p className="text-lg mt-5 text-center mb-10">
                 Añade pacientes y {''}
-                <span className="text-indigo-600 font-bold">Administralos</span>
+                <span className="text-indigo-600 font-bold">Adminístralos</span>
             </p>
 
             <form
@@ -125,11 +148,12 @@ export default function Formulario({ pacientes, setPacientes }) {
                         onChange={e => setSintomas(e.target.value)}
                     />
                 </div>
-                <button
+                <input
                     type="submit"
-                    className="bg-indigo-600 w-full p-2 mt-5 text-white uppercase font-bold hover:bg-indigo-700 rounded-md cursor-pointer transition-colors" >
-                    Agregar Cita
-                </button>
+                    className="bg-indigo-600 w-full p-2 mt-5 text-white uppercase font-bold hover:bg-indigo-700 rounded-md cursor-pointer transition-colors"
+                    value={paciente.id ? "Editar Paciente" : "Añadir Paciente"}
+                >
+                </input>
 
             </form>
         </div>
